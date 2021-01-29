@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Dict
+    // ListOfDoors
+
+    List<Dictionary<string, object>> doors = new List<Dictionary<string, object>>();
 
     public Dictionary<string, AreasStruct> doorsDict = new Dictionary<string, AreasStruct>();
 
@@ -41,6 +43,13 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
 
+        doors.Add(MakeDoorDictionary(mainDoor.name, mainArea, false, new Vector3(-0.17f, -5.84f, -1f)));
+        doors.Add(MakeDoorDictionary(bossDoor.name, bossArea, false, new Vector3(0, 35f, -1f)));
+        doors.Add(MakeDoorDictionary(blueDoor.name, blueArea));
+        doors.Add(MakeDoorDictionary(pinkDoor.name, pinkArea));
+        doors.Add(MakeDoorDictionary(redDoor.name, redArea, true));
+        doors.Add(MakeDoorDictionary(yellowDoor.name, yellowArea, true));
+
         MakeSingleton();
     }
 
@@ -62,10 +71,9 @@ public class GameManager : MonoBehaviour
     public void InteractWithDoor(Collider2D door)
     {
 
-        AreasStruct areaStruct = doorsDict[door.gameObject.name];
-
-
-        player.transform.position = areaStruct.customCoords;
+        Dictionary<string, object> selectedDoor = FindDoorInList(door.gameObject.name);
+        player.transform.position = (Vector3)selectedDoor["vector"];
+        ColorsManager.instance.InstantiateColor("Red", new Vector3(41.9f, -24.2f, -1f));
 
     }
 
@@ -88,19 +96,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        doorsDict.Add(mainDoor.name, MakeStruct(mainArea, false, new Vector3(-0.17f, -5.84f, -1f)));
-        doorsDict.Add(blueDoor.name, MakeStruct(blueArea));
-        doorsDict.Add(redDoor.name, MakeStruct(redArea, true));
-        doorsDict.Add(yellowDoor.name, MakeStruct(yellowArea, true));
-        doorsDict.Add(pinkDoor.name, MakeStruct(pinkArea));
-        doorsDict.Add(bossDoor.name, MakeStruct(bossArea, false, new Vector3(0, 35f, -1f)));
     }
 
-    AreasStruct MakeStruct(GameObject area, bool isLeft = false, Vector3? customVector = null)
+    Dictionary<string, object> MakeDoorDictionary(string name, GameObject area, bool isLeft = false, Vector3? customVector = null)
     {
+        if (customVector != null) return new Dictionary<string, object>
+        {
+            { "name", name },
+            { "vector", customVector },
 
-        if (customVector != null) return new AreasStruct(area, (Vector3)customVector);
-
+        };
 
         GameObject door = area.transform.Find("Main Door").gameObject;
 
@@ -115,9 +120,27 @@ public class GameManager : MonoBehaviour
             xValue += 1;
         }
 
+        return new Dictionary<string, object>
+        {
+            { "name", name },
+            { "vector", new Vector3(xValue, door.transform.position.y, -1f) },
 
-        return new AreasStruct(area, new Vector3(xValue, door.transform.position.y, -1f));
+        };
 
+    }
+
+    Dictionary<string, object> FindDoorInList(string doorName)
+    {
+
+        foreach (Dictionary<string, object> dict in doors)
+        {
+            if ((string)dict["name"] == doorName)
+            {
+                return dict;
+            }
+        }
+
+        return null;
     }
 
     // Update is called once per frame
