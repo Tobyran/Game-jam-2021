@@ -716,7 +716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 294612582}
   - component: {fileID: 294612583}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3235,6 +3235,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4873609875624089405, guid: a3c6101964a5320448571dc051cb36b1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4873609875624089407, guid: a3c6101964a5320448571dc051cb36b1,
         type: 3}
       propertyPath: m_RootOrder
@@ -3289,6 +3294,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873609876516071945, guid: a3c6101964a5320448571dc051cb36b1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3c6101964a5320448571dc051cb36b1, type: 3}

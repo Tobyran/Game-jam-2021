@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
 
         Dictionary<string, object> selectedDoor = FindDoorInList(door.gameObject.name);
         player.transform.position = (Vector3)selectedDoor["vector"];
-        //ColorsManager.instance.InstantiateColor("Red", new Vector3(41.9f, -24.2f, -1f));
+        ColorsManager.instance.InstantiateColor("Blue", new Vector3(41.9f, -24.2f, -1f));
 
     }
 

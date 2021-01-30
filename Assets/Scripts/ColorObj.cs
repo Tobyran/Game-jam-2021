@@ -27,7 +27,24 @@ public class ColorObj : MonoBehaviour
     {
         if (collision.collider.name == "Player")
         {
-            Debug.Log($"HEYY, i {color["name"]} color was touched by {collision.collider.name}");
+
+
+            string effect = color["effect"];
+
+            if (effect == "IncreaseAttack") {
+                PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();
+                player.attackBuff.gameObject.SetActive(true);
+                player.CheckBuff(effect);
+            }
+            else if (effect == "IncreaseRange")
+            {
+                PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();
+                player.rangeBuff.gameObject.SetActive(true);
+                player.CheckBuff(effect);
+            }
+
+            Destroy(gameObject);
+
         }
     }
 }

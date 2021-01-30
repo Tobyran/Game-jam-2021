@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Buff : MonoBehaviour
 {
+    public string type;
+    public int value;
+   
+
     // Start is called before the first frame update
     void Start()
     {

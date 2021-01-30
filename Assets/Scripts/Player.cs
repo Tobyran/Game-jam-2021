@@ -7,8 +7,10 @@ public class Player : MonoBehaviour
 
     private float horizontalAxis;
     private float verticalAxis;
-    public float movSpeed;
+    public float movSpeed = 5f;
     private Rigidbody2D rigidBody;
+    
+
     public int lifes;
 
     private void Awake()
@@ -19,16 +21,36 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
+
+  
        
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+   
+
         horizontalAxis = Input.GetAxis("Horizontal");
         verticalAxis = Input.GetAxis("Vertical");
+
+        if (horizontalAxis>0)
+        {
+            gameObject.transform.eulerAngles = new Vector3(0f, 0f, 270f);
+        }
+        if (horizontalAxis < 0)
+        {
+            gameObject.transform.eulerAngles = new Vector3(0f, 0f, 90f);
+        }
+        if (verticalAxis > 0)
+        {
+            gameObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
+        }
+        if (verticalAxis < 0)
+        {
+            gameObject.transform.eulerAngles = new Vector3(0f, 0f, 180f);
+        }
+
     }
 
     private void FixedUpdate()
@@ -67,4 +89,5 @@ public class Player : MonoBehaviour
             GameManager.instance.ShowDoorMessage(collision.collider, false);
         }
     }
+
 }
