@@ -102,8 +102,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1094066143
-  m_SortingLayer: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e3cd9eb24c9ab0b4d9dd39ef52e17d36, type: 3}
   m_Color: {r: 0.020247417, g: 0.63679594, b: 0.8584906, a: 1}
@@ -194,7 +194,7 @@ MonoBehaviour:
   attackDamage: 1
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   attackBuff: {fileID: 986672948129907769, guid: 8f6fda0fe4f67c94fa24da0707380997,
     type: 3}
   rangeBuff: {fileID: 2868159165180088244, guid: 83ee6cbd3fa17df4789433d3051253ad,

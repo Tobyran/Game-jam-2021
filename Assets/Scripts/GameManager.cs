@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     // Player
     public Player player;
-    private Player currentPlayer;
+    private Player currentPlayer = null;
 
     // Door Colliders
     public GameObject mainDoor;
@@ -53,11 +53,6 @@ public class GameManager : MonoBehaviour
     public Text score;
     public Text lifes;
     public Text door;
-
-    // Enemies
-
-    public GameObject enemy;
-    private GameObject currentEnemy;
 
     // Game Variables
 
@@ -117,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         // Toby - Cambiar a State.INIT para evitar tener que darle click cada rato al boton del menu.
 
-        SwitchState(State.INIT);
+        SwitchState(State.MENU);
 
     }
 
@@ -196,10 +191,10 @@ public class GameManager : MonoBehaviour
             case State.LOADING:
                 CreatePlayer();
                 ConfigureScene();
-                
+
                 // Toby - Se puede reducir el delay a 0 para que la carga sea basicamente inmediata.
 
-                SwitchState(State.PLAY, 0f);
+                SwitchState(State.PLAY, 3f);
                 break;
             case State.PLAY:
                 Time.timeScale = 1;
@@ -247,13 +242,13 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null)
         {
-            currentPlayer = Instantiate(player, new Vector2(-6.53f, -6.77f), Quaternion.identity);
+            currentPlayer = Instantiate(player, new Vector2(-0.17f, -5.84f), Quaternion.identity);
 
 
         }
         else
         {
-            currentPlayer.transform.position = new Vector2(-6.53f, -6.77f);
+            currentPlayer.transform.position = new Vector2(-0.17f, -5.84f);
         }
         currentPlayer.lifes = 3;
         mainCamera.player = currentPlayer.gameObject;
@@ -274,7 +269,6 @@ public class GameManager : MonoBehaviour
         {
             ColorsManager.Instance.InstantiateColor(null, spawnPoint);
         }
-
     }
 
     public void InteractWithDoor(Collider2D door)

@@ -890,9 +890,6 @@ MonoBehaviour:
   score: {fileID: 306120308}
   lifes: {fileID: 642262508}
   door: {fileID: 291724390}
-  NavMesh2D: {fileID: 7821995262773327518, guid: 132850b43228c914da3c38fa586c2712,
-    type: 3}
-  enemy: {fileID: 8861526823336680425, guid: cca325d33f1da0b4f9da8cd119da05c5, type: 3}
 --- !u!1 &766466029
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,16 +1179,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1553066951}
     m_Modifications:
-    - target: {fileID: 3169877647950524176, guid: cbbdb497b58207b45ad50cd92214e3f7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3169877647950524176, guid: cbbdb497b58207b45ad50cd92214e3f7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.29
-      objectReference: {fileID: 0}
     - target: {fileID: 8309993732842754169, guid: cbbdb497b58207b45ad50cd92214e3f7,
         type: 3}
       propertyPath: m_RootOrder
@@ -1251,21 +1238,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Map_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309993733047299318, guid: cbbdb497b58207b45ad50cd92214e3f7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309993733638831897, guid: cbbdb497b58207b45ad50cd92214e3f7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.62
-      objectReference: {fileID: 0}
-    - target: {fileID: 8309993733638831897, guid: cbbdb497b58207b45ad50cd92214e3f7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.62
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbbdb497b58207b45ad50cd92214e3f7, type: 3}
