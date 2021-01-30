@@ -18,7 +18,7 @@ public class ColorObj : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == "Player")
+        if (collision.collider.CompareTag("Player"))
         {
 
             PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();

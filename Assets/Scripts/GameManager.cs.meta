@@ -3,7 +3,28 @@ guid: 643738ce95aaf1841b680a16e3116395
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {fileID: 4873609875624089406, guid: a3c6101964a5320448571dc051cb36b1,
+      type: 3}
+  - mainDoor: {instanceID: 0}
+  - blueDoor: {instanceID: 0}
+  - redDoor: {instanceID: 0}
+  - yellowDoor: {instanceID: 0}
+  - pinkDoor: {instanceID: 0}
+  - bossDoor: {instanceID: 0}
+  - mainArea: {instanceID: 0}
+  - blueArea: {instanceID: 0}
+  - redArea: {instanceID: 0}
+  - yellowArea: {instanceID: 0}
+  - pinkArea: {instanceID: 0}
+  - bossArea: {instanceID: 0}
+  - parentMap: {instanceID: 0}
+  - map1: {instanceID: 0}
+  - menuPane: {instanceID: 0}
+  - loadingPane: {instanceID: 0}
+  - playPane: {instanceID: 0}
+  - pausedPane: {instanceID: 0}
+  - gameOverPane: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

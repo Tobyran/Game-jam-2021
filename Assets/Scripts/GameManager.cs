@@ -14,11 +14,12 @@ public class GameManager : MonoBehaviour
 
     List<Dictionary<string, object>> maps = new List<Dictionary<string, object>>();
 
+    // Main Camera
+    public CameraController mainCamera;
+
     // Player
     public Player player;
-
-    public GameObject playPanel;
-    public Text interactions;
+    private Player currentPlayer = null;
 
     // Door Colliders
     public GameObject mainDoor;
@@ -41,7 +42,44 @@ public class GameManager : MonoBehaviour
     public GameObject parentMap;
     public GameObject map1;
 
+    // Panes
+    public GameObject menuPane;
+    public GameObject loadingPane;
+    public GameObject playPane;
+    public GameObject pausedPane;
+    public GameObject gameOverPane;
+
+    // Texts
+    public Text score;
+    public Text lifes;
+    public Text door;
+
+    // Game Variables
+
+    private int _score;
+
+    public int Score
+    {
+        get { return _score; }
+        set { _score = value; score.text = $"SCORE: {value}"; }
+    }
+
+    private int _lifes;
+
+    public int Lifes
+    {
+        get { return _lifes; }
+        set { _lifes = value; lifes.text = $"LIFES: {value}"; }
+    }
+
+
     public static GameManager Instance { get; set; }
+
+    public enum State { MENU, INIT, LOADING, PLAY, PAUSE, GAMEOVER };
+
+    private State oldState;
+
+    public State CurrentState { get { return CurrentState; } }
 
     private void MakeSingleton()
     {
@@ -72,45 +110,188 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
+        // Toby - Cambiar a State.INIT para evitar tener que darle click cada rato al boton del menu.
+
+        SwitchState(State.MENU);
+
+    }
+
+    void Update()
+    {
+        switch (oldState)
+        {
+
+            case State.PLAY:
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    Pause();
+                }
+                break;
+            case State.PAUSE:
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    Resume();
+                }
+                break;
+            case State.GAMEOVER:
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    SwitchState(State.MENU);
+                }
+                break;
+        }
+    }
+
+    public void Play()
+    {
+        SwitchState(State.INIT);
+    }
+
+    void Pause()
+    {
+        SwitchState(State.PAUSE);
+    }
+
+    void Resume()
+    {
+        SwitchState(State.PLAY);
+    }
+
+    public void PlayerIsDead()
+    {
+        SwitchState(State.GAMEOVER);
+    }
+
+    void SwitchState(State newState, float delay = 0f)
+    {
+        StartCoroutine(SwitchDelay(newState, delay));
+    }
+
+    IEnumerator SwitchDelay(State newState, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        EndState();
+        oldState = newState;
+        StartState(newState);
+
+    }
+
+    void StartState(State newState)
+    {
+        switch (newState)
+        {
+            case State.MENU:
+                menuPane.SetActive(true);
+                break;
+            case State.INIT:
+                SetDefaultValues();
+                loadingPane.SetActive(true);
+                SwitchState(State.LOADING);
+                break;
+            case State.LOADING:
+                CreatePlayer();
+                ConfigureScene();
+
+                // Toby - Se puede reducir el delay a 0 para que la carga sea basicamente inmediata.
+
+                SwitchState(State.PLAY, 3f);
+                break;
+            case State.PLAY:
+                Time.timeScale = 1;
+                playPane.SetActive(true);
+                break;
+            case State.PAUSE:
+                Time.timeScale = 0;
+                pausedPane.SetActive(true);
+                break;
+            case State.GAMEOVER:
+
+                if (currentPlayer.lifes <= 0)
+                {
+                    Destroy(currentPlayer.gameObject);
+                    gameOverPane.SetActive(true);
+                }
+                break;
+        }
+    }
+
+    void EndState()
+    {
+        switch (oldState)
+        {
+            case State.MENU:
+                menuPane.SetActive(false);
+                break;
+            case State.LOADING:
+                loadingPane.SetActive(false);
+                break;
+            case State.PLAY:
+                playPane.SetActive(false);
+                break;
+            case State.PAUSE:
+                pausedPane.SetActive(false);
+                break;
+            case State.GAMEOVER:
+                gameOverPane.SetActive(false);
+                break;
+        }
+
+    }
+
+    void CreatePlayer()
+    {
+        if (currentPlayer == null)
+        {
+            currentPlayer = Instantiate(player, new Vector2(-0.17f, -5.84f), Quaternion.identity);
+
+
+        }
+        else
+        {
+            currentPlayer.transform.position = new Vector2(-0.17f, -5.84f);
+        }
+        currentPlayer.lifes = 3;
+        mainCamera.player = currentPlayer.gameObject;
+    }
+
+    void SetDefaultValues()
+    {
+        Score = 0;
+        Lifes = 3;
+    }
+
+    void ConfigureScene()
+    {
+
         List<Vector2> spawnPoints = (List<Vector2>)maps[Random.Range(0, maps.Count)]["spawnPoints"];
 
         foreach (Vector2 spawnPoint in spawnPoints)
         {
             ColorsManager.Instance.InstantiateColor(null, spawnPoint);
         }
-
-
     }
-
-    void Update()
-    {
-
-    }
-
-
 
     public void InteractWithDoor(Collider2D door)
     {
 
-        player.transform.position = (Vector3)FindDoorInList(door.gameObject.name)["vector"];
+        currentPlayer.transform.position = (Vector2)FindDoorInList(door.gameObject.name)["vector"];
     }
 
-    public void ShowDoorMessage(Collider2D door, bool isStaying)
+    public void ShowDoorMessage(Collider2D doorCollider, bool isStaying)
     {
-
-
         if (isStaying)
         {
-            interactions.text = $"Press E to interact with: {door.name}";
-
+            door.text = $"Press E to interact with: {doorCollider.name}";
         }
         else
         {
-            interactions.text = "";
+            door.text = "";
         }
+
+
     }
 
-    Dictionary<string, object> MakeDoorDictionary(string name, GameObject area, bool isLeft = false, Vector3? customVector = null)
+    Dictionary<string, object> MakeDoorDictionary(string name, GameObject area, bool isLeft = false, Vector2? customVector = null)
     {
         if (customVector != null) return new Dictionary<string, object>
         {
@@ -128,7 +309,7 @@ public class GameManager : MonoBehaviour
         return new Dictionary<string, object>
         {
             { "name", name },
-            { "vector", new Vector3(xValue, door.transform.position.y, -1f) },
+            { "vector", new Vector2(xValue, door.transform.position.y) },
 
         };
 
