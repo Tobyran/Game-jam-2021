@@ -4,28 +4,17 @@ using UnityEngine;
 
 public class ColorsManager : MonoBehaviour
 {
- 
+
     public ColorObj colorObject;
-    public static ColorsManager instance;
+    public static ColorsManager Instance { get; set; }
     public List<Dictionary<string, string>> colors = new List<Dictionary<string, string>>();
 
 
-
-
-    private void Awake()
-    {
-        colors.Add(MakeColorDictionary("Blue", "#EC4947", "IncreaseRange"));
-        colors.Add(MakeColorDictionary("Red", "#4A52F2", "IncreaseMovement"));
-        colors.Add(MakeColorDictionary("Yellow", "#DEF026", "IncreaseAttack"));
-      
-        MakeSingleton();
-    }
-
     private void MakeSingleton()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -34,28 +23,38 @@ public class ColorsManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        colors.Add(MakeColorDictionary("Blue", "#4A52F2", "IncreaseRange"));
+        colors.Add(MakeColorDictionary("Yellow", "#DEF026", "IncreaseAttack"));
+        MakeSingleton();
+    }
 
-    public void InstantiateColor(string name = null, Vector3 position = new Vector3())
+
+    public void InstantiateColor(string name = null, Vector2 position = new Vector2())
     {
         ColorObj color = Instantiate(colorObject);
         color.transform.position = position;
 
         if (name != null)
         {
-            if (FindColorInList(name) != null) {
-                color.color = FindColorInList(name);
+            Dictionary<string, string> values = FindColorInList(name);
 
-            } else
+            if (values != null)
+            {
+                color.color = values;
+            }
+            else
             {
                 Debug.Log($"{name} Color not found");
             }
+
         }
         else
         {
             color.color = ChooseRandomColor();
         }
 
-       
 
     }
 
@@ -71,7 +70,7 @@ public class ColorsManager : MonoBehaviour
 
     }
 
-    public Dictionary<string,string> ChooseRandomColor()
+    public Dictionary<string, string> ChooseRandomColor()
     {
 
         return colors[Random.Range(0, colors.Count)];
@@ -91,15 +90,4 @@ public class ColorsManager : MonoBehaviour
         return null;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

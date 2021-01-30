@@ -36,7 +36,7 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            Debug.Log(enemy.name + "hitted");
+            enemy.GetComponent<EnemyController>().TakeDamage(attackDamage);
         }
 
     }
@@ -44,10 +44,7 @@ public class PlayerCombat : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
 
-        if (attackPoint == null)
-        {
-            return;
-        }
+        if (attackPoint == null) return;
 
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
 
@@ -60,11 +57,13 @@ public class PlayerCombat : MonoBehaviour
             if (!attackBuff.isActiveAndEnabled)
             {
                 attackDamage += attackBuff.value;
-            } else
+            }
+            else
             {
                 attackDamage -= attackBuff.value;
             }
-        } else if (effect == "IncreaseRange")
+        }
+        else if (effect == "IncreaseRange")
         {
             if (!rangeBuff.isActiveAndEnabled)
             {

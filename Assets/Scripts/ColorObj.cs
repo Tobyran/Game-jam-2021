@@ -7,7 +7,6 @@ public class ColorObj : MonoBehaviour
 
     public Dictionary<string, string> color;
 
-    // Start is called before the first frame update
     void Start()
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
@@ -17,31 +16,26 @@ public class ColorObj : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.name == "Player")
         {
 
+            PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();
 
             string effect = color["effect"];
 
-            if (effect == "IncreaseAttack") {
-                PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();
-                player.attackBuff.gameObject.SetActive(true);
-                player.CheckBuff(effect);
-            }
-            else if (effect == "IncreaseRange")
+            switch(effect)
             {
-                PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();
-                player.rangeBuff.gameObject.SetActive(true);
-                player.CheckBuff(effect);
+                case "IncreaseAttack":
+                    player.attackBuff.gameObject.SetActive(true);
+                    break;
+                case "IncreaseRange":
+                    player.rangeBuff.gameObject.SetActive(true);
+                    break;
             }
+
+            player.CheckBuff(effect);
 
             Destroy(gameObject);
 
