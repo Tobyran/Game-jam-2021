@@ -67,6 +67,7 @@ public class ColorsManager : MonoBehaviour
             { "name", name },
             { "value", value },
             { "effect", effect }
+
         };
 
     }

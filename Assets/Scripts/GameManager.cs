@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
 
     List<Dictionary<string, object>> doors = new List<Dictionary<string, object>>();
 
-    public Dictionary<string, AreasStruct> doorsDict = new Dictionary<string, AreasStruct>();
-
     // Player
     public Player player;
 
@@ -73,7 +71,7 @@ public class GameManager : MonoBehaviour
 
         Dictionary<string, object> selectedDoor = FindDoorInList(door.gameObject.name);
         player.transform.position = (Vector3)selectedDoor["vector"];
-        ColorsManager.instance.InstantiateColor("Red", new Vector3(41.9f, -24.2f, -1f));
+        //ColorsManager.instance.InstantiateColor("Red", new Vector3(41.9f, -24.2f, -1f));
 
     }
 
