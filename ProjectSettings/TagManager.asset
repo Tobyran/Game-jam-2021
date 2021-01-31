@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Door
   - Color
+  - "Da\xF1o"
   layers:
   - Default
   - TransparentFX

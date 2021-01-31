@@ -1,0 +1,37 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyColliderScript : MonoBehaviour
+{
+
+
+
+
+
+
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+
+        if (collision.GetComponent<BoxCollider2D>().CompareTag("Player"))
+        {
+            Debug.Log("Being collided");
+        }
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<BoxCollider2D>().CompareTag("Player"))
+        {
+            Debug.Log("Stopped collision");
+        }
+    }
+
+
+
+
+}

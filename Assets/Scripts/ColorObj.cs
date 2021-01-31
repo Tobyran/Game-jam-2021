@@ -21,21 +21,32 @@ public class ColorObj : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
 
-            PlayerCombat player = collision.collider.GetComponent<PlayerCombat>();
+            Player player = collision.collider.GetComponent<Player>();
+            PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
 
             string effect = color["effect"];
 
             switch(effect)
             {
-                case "IncreaseAttack":
-                    player.attackBuff.gameObject.SetActive(true);
+                case "Slow":
+                    player.GetComponent<Slow>().enabled = true;
+                    playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Blue"));
                     break;
-                case "IncreaseRange":
-                    player.rangeBuff.gameObject.SetActive(true);
+                case "Shield":
+                    player.GetComponent<Shield>().enabled = true;
+                    playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Green"));
+                    break;
+                case "FireBall":
+                    player.GetComponent<Fireball>().enabled = true;
+                    playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Red"));
+                    break;
+                case "Range":
+                    player.GetComponent<Range>().enabled = true;
+                    playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Yellow"));
                     break;
             }
 
-            player.CheckBuff(effect);
+           // player.CheckBuff(effect);
 
             Destroy(gameObject);
 

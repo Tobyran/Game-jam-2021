@@ -25,8 +25,10 @@ public class ColorsManager : MonoBehaviour
 
     private void Awake()
     {
-        colors.Add(MakeColorDictionary("Blue", "#4A52F2", "IncreaseRange"));
-        colors.Add(MakeColorDictionary("Yellow", "#DEF026", "IncreaseAttack"));
+        colors.Add(MakeColorDictionary("Blue", "#4362b5", "Slow"));
+        colors.Add(MakeColorDictionary("Yellow", "#edb135", "Range"));
+        colors.Add(MakeColorDictionary("Red", "#dc4933", "FireBall"));
+        colors.Add(MakeColorDictionary("Green", "#70d888", "Shield"));
         MakeSingleton();
     }
 
