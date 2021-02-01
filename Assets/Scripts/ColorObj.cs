@@ -23,30 +23,35 @@ public class ColorObj : MonoBehaviour
 
             Player player = collision.collider.GetComponent<Player>();
             PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
+            Espadazo sword = player.transform.Find("AttackPointBreve").GetComponent<Espadazo>();
+            Espadazo sword2 = player.transform.Find("AttackPointAlto").GetComponent<Espadazo>();
 
             string effect = color["effect"];
 
             switch(effect)
             {
                 case "Slow":
-                    player.GetComponent<Slow>().enabled = true;
+                    sword.capacidadRealentizar = true;
+                    sword2.capacidadRealentizar = true;
                     playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Blue"));
+                    player.azulb = true;
                     break;
                 case "Shield":
                     player.GetComponent<Shield>().enabled = true;
                     playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Green"));
+                    player.verdeb = true;
                     break;
                 case "FireBall":
                     player.GetComponent<Fireball>().enabled = true;
                     playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Red"));
+                    player.rojob = true;
                     break;
                 case "Range":
-                    player.GetComponent<Range>().enabled = true;
+                    player.GetComponent<Range>().AtaqueLargo();
                     playerHealth.colors.Add(ColorsManager.Instance.FindColorInList("Yellow"));
+                    player.amarillob = true;
                     break;
             }
-
-           // player.CheckBuff(effect);
 
             Destroy(gameObject);
 

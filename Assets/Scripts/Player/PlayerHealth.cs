@@ -7,10 +7,14 @@ public class PlayerHealth : MonoBehaviour
     public int lifes = 1, NroColores = 0;
     float AtackSpeed = 1f;
     public List<Dictionary<string, string>> colors = new List<Dictionary<string, string>>();
+    Shield escudo;
+    [SerializeField] GameObject rojo, azul, amarillo, verde;
+    Player player;
 
     void Start()
     {
-        
+        escudo = GetComponent<Shield>();
+        player = GetComponent<Player>();
     }
 
 
@@ -29,9 +33,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (collision.collider.CompareTag("Daño") && AtackSpeed >= 1f)
         {
-            NroColores--;
-            AtackSpeed = 0f;
-            RemoveRandomColor();
+            RecivirDaño();  
         }
     }
 
@@ -43,21 +45,43 @@ public class PlayerHealth : MonoBehaviour
         switch (colorcito["effect"])
         {
             case "Slow":
-                GetComponent<Slow>().enabled = false;              
+                Espadazo sword = transform.Find("AttackPointBreve").GetComponent<Espadazo>();
+                Espadazo sword2 = transform.Find("AttackPointAlto").GetComponent<Espadazo>();
+                sword.capacidadRealentizar = false;
+                sword2.capacidadRealentizar = false;
+                azul.SetActive(false);
+                player.azulb = false;
                 break;
             case "Shield":
-                GetComponent<Shield>().enabled = false;               
+                GetComponent<Shield>().enabled = false;
+                verde.SetActive(false);
+                player.verdeb = false;
                 break;
             case "FireBall":
-                GetComponent<Fireball>().enabled = false;               
+                GetComponent<Fireball>().enabled = false;
+                rojo.SetActive(false);
+                player.rojob = false;
                 break;
             case "Range":
-                GetComponent<Range>().enabled = false;                
+                GetComponent<Range>().Ataquecorto();
+                amarillo.SetActive(false);
+                player.amarillob = false;
                 break;
         }
-
     }
 
-
+    private void RecivirDaño()
+    {
+        if (escudo.escudado)
+        {
+            escudo.escudado = false;
+        }
+        else
+        {
+            NroColores--;
+            AtackSpeed = 0f;
+            RemoveRandomColor();
+        }
+    }
 
 }

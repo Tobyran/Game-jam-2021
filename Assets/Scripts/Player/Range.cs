@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Range : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    AtaqueXD corto;
+    AtaqueLargo largo;
+
+    void Awake()
     {
-        
+        corto = GetComponent<AtaqueXD>();
+        largo = GetComponent<AtaqueLargo>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Ataquecorto()
     {
-        
+        corto.enabled = true;
+        largo.enabled = false;
     }
+
+    public void AtaqueLargo()
+    {
+        corto.enabled = false;
+        largo.enabled = true;
+    }
+
 }

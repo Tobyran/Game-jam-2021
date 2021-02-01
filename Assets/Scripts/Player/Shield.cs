@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public bool escudado;
+    private float cooldown = 3f, timer = 0f;
+    [SerializeField] GameObject escudazo;
+
     void Start()
     {
-        
+        escudado = true;
+        escudazo.SetActive(true);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        
+
+        if (escudado == false)
+        {
+            timer += Time.deltaTime;
+            escudazo.SetActive(false);
+        }
+
+        if (escudado == false && timer >= cooldown)
+        {
+            escudado = true;
+            timer = 0f;
+            escudazo.SetActive(true);
+        }
+
     }
 }

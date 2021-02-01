@@ -8,31 +8,61 @@ public class EnemyController : MonoBehaviour
 
     public float lifes = 5;
     public float movSpeed = 5;
+    private float movspeedinicial;
     public Transform player;
     private Rigidbody2D rigidBody;
     private Vector2 movement;
     public bool isFollowing = false;
-
-
+    Vector3 startPos;
+    Slow slow;
+    SpriteRenderer color;
+    [SerializeField] float tiempodeslow, timer = 0f;
+    [SerializeField] bool lento;
+    [SerializeField] int puntos;
+    GameManager manager;
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        startPos = transform.position;
         rigidBody = GetComponent<Rigidbody2D>();
+        slow = GameObject.FindGameObjectWithTag("Player").GetComponent<Slow>();
+        color = GetComponent<SpriteRenderer>();
+        movspeedinicial = movSpeed;
     }
 
     void Update()
     {
 
         Vector3 direction = player.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rigidBody.rotation = angle;
         direction.Normalize();
+        startPos.Normalize();
         movement = direction;
+
+        if (lento)
+        {
+            timer += Time.deltaTime;
+        }
+
+        if (timer >= tiempodeslow)
+        {
+            AdiosLento();
+        }
 
     }
 
     private void FixedUpdate()
     {
+
+        if (player.position.magnitude - transform.position.magnitude < 8)
+        {
+            isFollowing = true;
+        }
+        else
+        {
+            isFollowing = false;
+        }
+
         if (isFollowing)
         {
             MoveCharacter(movement);
@@ -52,6 +82,7 @@ public class EnemyController : MonoBehaviour
 
         if (lifes <= 0)
         {
+            Destroy(gameObject);
             Debug.Log("enemy dead");
         }
 
@@ -76,5 +107,20 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void Realentizado()
+    {
+        lento = true;
+        if(ColorUtility.TryParseHtmlString("#4362b5", out Color rgba))
+        { color.color = rgba; }
+        movSpeed = movSpeed / 2;
+    }
+
+    private void AdiosLento()
+    {
+        lento = false;
+        timer = 0f;
+        color.color = new Color(1, 1, 1, 1);
+        movSpeed = movspeedinicial;
+    }
 
 }

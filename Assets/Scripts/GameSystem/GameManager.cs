@@ -52,12 +52,24 @@ public class GameManager : MonoBehaviour
 
     // Texts
     public Text score;
-    public Text lifes;
     public Text door;
 
     // Enemies
     public EnemyController enemy;
-    private EnemyController currEnemy;
+    public int maxEnemies = 10;
+    public GameObject witch;
+    private List<Vector2> enemyPositions = new List<Vector2>();
+
+    private List<EnemyController> enemies = new List<EnemyController>();
+    private GameObject currWitch;
+
+    // Timers
+
+    public float enemyFrequency = 3f;
+    public float witchFrequency = 3f * 60f;
+
+    private float enemyTimer;
+    private float witchTimer;
 
     // Game Variables
 
@@ -68,15 +80,6 @@ public class GameManager : MonoBehaviour
         get { return _score; }
         set { _score = value; score.text = $"SCORE: {value}"; }
     }
-
-    private int _lifes;
-
-    public int Lifes
-    {
-        get { return _lifes; }
-        set { _lifes = value; lifes.text = $"LIFES: {value}"; }
-    }
-
 
     public static GameManager Instance { get; set; }
 
@@ -101,8 +104,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        //COlores
+        maps.Add(MakeMapDictionary("Base", map1, new List<Vector2>() { new Vector2(-24.7f, 15.8f),  new Vector2(-24.7f, -14), new Vector2(23.8f, -13.4f), new Vector2(23.8f, 15.8f) }));
 
-        maps.Add(MakeMapDictionary("Base", map1, new List<Vector2>() { new Vector2(-45.96546f, -24.4639f), new Vector2(-45.96546f, 5.043973f), new Vector2(43.59225f, 5.281386f), new Vector2(43.59225f, -23.89389f) }));
+        // Enemies Spawn Position
+        enemyPositions.Add(new Vector2(-6.9f, 11f));
+        enemyPositions.Add(new Vector2(13.6f, -2.8f));
+        enemyPositions.Add(new Vector2(-16f, -11.3f));
+
+        // Doors
+
         doors.Add(MakeDoorDictionary(mainDoor.name, mainArea, false, new Vector3(-0.17f, -5.84f, -1f)));
         doors.Add(MakeDoorDictionary(bossDoor.name, bossArea, false, new Vector3(0, 35f, -1f)));
         doors.Add(MakeDoorDictionary(blueDoor.name, blueArea));
@@ -131,6 +142,9 @@ public class GameManager : MonoBehaviour
                 {
                     Pause();
                 }
+
+                SetTimerRunning();
+                ManageTimer();
                 break;
             case State.PAUSE:
                 if (Input.GetKeyDown(KeyCode.P))
@@ -195,15 +209,13 @@ public class GameManager : MonoBehaviour
                 break;
             case State.LOADING:
                 CreatePlayer();
-                CreateEnemy();
                 ConfigureScene();
-
-                // Toby - Se puede reducir el delay a 0 para que la carga sea basicamente inmediata.
 
                 SwitchState(State.PLAY, 3f);
                 break;
             case State.PLAY:
                 Time.timeScale = 1;
+            
                 playPane.SetActive(true);
                 break;
             case State.PAUSE:
@@ -248,7 +260,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null)
         {
-            currentPlayer = Instantiate(player, new Vector2(-0.17f, -5.84f), Quaternion.identity);           
+            currentPlayer = Instantiate(player, new Vector2(0f, 0f), Quaternion.identity);           
             currentplayerHealth = currentPlayer.GetComponent<PlayerHealth>();
         }
        
@@ -257,23 +269,62 @@ public class GameManager : MonoBehaviour
 
     void CreateEnemy()
     {
-        if (currEnemy == null)
-        {
-            currEnemy = Instantiate(enemy, new Vector2(-4.01f, 6.34f), Quaternion.identity);
-            currentplayerHealth = currEnemy.GetComponent<PlayerHealth>();
+    
+        if (enemies.Count < maxEnemies){
+            // Add enemies
+
+            Vector2 position = enemyPositions[Random.Range(0, enemyPositions.Count)];
+           
+            EnemyController currEnemy = Instantiate(enemy, position, Quaternion.identity);
+
+            currEnemy.lifes = 3;
+            currEnemy.player = currentPlayer.transform;
+
+            enemies.Add(currEnemy);
         }
-        else
-        {
-            currEnemy.transform.position = new Vector2(-4.01f, 6.34f);
-        }
-        currEnemy.lifes = 3;
-        currEnemy.player = currentPlayer.transform;
+
     }
+
+    void CreateWitch()
+    {
+        Vector2 position = new Vector2(0.1f, 15.3f);
+        if (currWitch == null)
+        {
+
+            currWitch = Instantiate(witch, position, Quaternion.identity);
+        } else
+        {
+            currWitch.transform.position = position;
+        }
+
+    }
+
+    void SetTimerRunning()
+    {
+        enemyTimer += Time.deltaTime;
+        witchTimer += Time.deltaTime;
+    }
+
+    void ManageTimer()
+    {
+      if (enemyTimer >= enemyFrequency)
+        {
+            CreateEnemy();
+            enemyTimer = 0f;
+        } 
+
+      if (witchTimer >= witchFrequency)
+        {
+            CreateWitch();
+            witchTimer = 0f;
+        }
+    }
+
 
     void SetDefaultValues()
     {
         Score = 0;
-        Lifes = 3;
+
     }
 
     void ConfigureScene()

@@ -8,14 +8,20 @@ public class Player : MonoBehaviour
     private float horizontalAxis;
     private float verticalAxis;
     public float movSpeed = 5f;
+    private float movspeedinicial;
     private Rigidbody2D rigidBody;
     Animator anim;
     private bool lateral = false, espalda = false, frente = false;
+    [SerializeField] bool realentizado;
+    [SerializeField] float tiemposlow, timer;
+    [SerializeField] GameObject azul, rojo, verde, amarillo;
+    public bool azulb, rojob, amarillob, verdeb;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        movspeedinicial = movSpeed;
     }
 
     void Update()
@@ -66,7 +72,31 @@ public class Player : MonoBehaviour
             anim.SetFloat("Speed", Mathf.Abs(rigidBody.velocity.x));
         }
 
+        if (realentizado)
+        {
+            timer += Time.deltaTime;           
+        }
+        if (timer >= tiemposlow)
+        {
+            CminarNormal();
+        }
 
+        if (azulb)
+        {
+            azul.SetActive(true);
+        }
+        if (rojob)
+        {
+            rojo.SetActive(true);
+        }
+        if (verdeb)
+        {
+            verde.SetActive(true);
+        }
+        if (amarillob)
+        {
+            amarillo.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
@@ -103,4 +133,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Realentizar()
+    {
+        realentizado = true;
+        movSpeed = movSpeed / 2;
+    }
+    private void CminarNormal()
+    {
+        realentizado = false;
+        timer = 0f;
+        movSpeed = movspeedinicial;
+    }
 }

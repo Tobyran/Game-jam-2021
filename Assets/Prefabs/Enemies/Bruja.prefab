@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7217122216400686651}
   - component: {fileID: 4835398040077995064}
   - component: {fileID: 4099967965311818600}
+  - component: {fileID: -7547131296654850525}
   m_Layer: 9
   m_Name: Bruja
   m_TagString: Player
@@ -159,12 +160,37 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7217122216400686655}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6726e53a3f377cc47ad167355e0d3075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 500
-  Damage: 1
-  distanceFollowing: 0
-  target: {fileID: 0}
+  lifes: 5
+  movSpeed: 5
+  player: {fileID: 0}
+  isFollowing: 0
+  tiempodeslow: 0
+  timer: 0
+  lento: 0
+--- !u!114 &-7547131296654850525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7217122216400686655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24c79b6c73d77df47a31040520bc002c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Witchstates:
+  - round
+  - line
+  - projectile
+  randomNumber: 0
+  timer: 0
+  Round: {fileID: 0}
+  Lines: {fileID: 0}
+  Points: []
+  bullets: {fileID: 7772001189545450358, guid: 522b61cbec262b943a105ad6a7993bd8, type: 3}
